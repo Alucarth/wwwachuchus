@@ -37,7 +37,8 @@ use Muserpol\Models\Contribution\Contribution;
 use Muserpol\Models\Contribution\ContributionType;
 use Muserpol\Models\RetirementFund\RetFunCorrelative;
 use Muserpol\Models\InfoLoan;
-
+use Muserpol\Models\Contribution\Reimbursement;
+use Muserpol\Models\Degree;
 class RetirementFundCertificationController extends Controller
 {
     /**
@@ -714,9 +715,64 @@ class RetirementFundCertificationController extends Controller
         $namepdf = Util::getPDFName($pdftitle, $affiliate);
         return \PDF::loadView('contribution.print.certification_item0', compact('itemcero','itemcero_sin_aporte','subtitle','place','retirement_fund','reimbursements','dateac','exp','degree','contributions','affiliate','title', 'username','institution', 'direction', 'unit', 'date','header', 'number'))->setPaper('letter')->setOption('encoding', 'utf-8')->setOption('footer-right', 'Pagina [page] de [toPage]')->setOption('footer-left', 'PLATAFORMA VIRTUAL DE LA MUSERPOL - 2018')->stream("$namepdf");
     } 
-
+    public function printCertificationBs($id){
+        $retirement_fund = RetirementFund::find($id);
+        $affiliate = $retirement_fund->affiliate;
+        $bs = ContributionType::where('name','=','Período de Batallón de Seguridad Física Con Aporte')->first();
+        $bs_sin_aporte = ContributionType::where('name','=','Período de Batallón de Seguridad Física Sin Aporte')->first();
+        $contributions = Contribution::where('affiliate_id', $affiliate->id)
+                        ->orderBy('month_year')
+                        ->get();
+        $reimbursements = Reimbursement::where('affiliate_id', $affiliate->id)
+                        ->orderBy('month_year')
+                        ->get();
+        $institution = 'MUTUAL DE SERVICIOS AL POLICÍA "MUSERPOL"';
+        $direction = "DIRECCIÓN DE BENEFICIOS ECONÓMICOS";
+        $unit = "UNIDAD DE OTORGACIÓN DE FONDO DE RETIRO POLICIAL, CUOTA MORTUORIA Y AUXILIO MORTUORIO";
+        $title = "CERTIFICACION DE CUENTAS INDIVIDUALES BATALLON DE SEGURIDAD FISICA";
+        $subtitle = "Cuenta Individual";
+        $number = $retirement_fund->code;
+        $date = Util::getStringDate($retirement_fund->reception_date);
+        $degree = Degree::find($affiliate->degree_id);
+        $exp = City::find($affiliate->city_identity_card_id);
+        $exp = ($exp==Null)? "-": $exp->first_shortened;
+        $dateac = Carbon::now()->format('d/m/Y');
+        $place = City::find($retirement_fund->city_start_id);              
+        $username = Auth::user()->username;
+        $pdftitle = "Cuentas Individuales";
+        $namepdf = Util::getPDFName($pdftitle, $affiliate);
+        return \PDF::loadView('contribution.print.certification_bs', compact('bs','bs_sin_aporte','subtitle','place','retirement_fund','reimbursements','dateac','exp','degree','contributions','affiliate','title', 'username','institution', 'direction', 'unit', 'date','header', 'number'))->setPaper('letter')->setOption('encoding', 'utf-8')->setOption('footer-right', 'Pagina [page] de [toPage]')->setOption('footer-left', 'PLATAFORMA VIRTUAL DE LA MUSERPOL - 2018')->stream("$namepdf");
+    }
+    public function printCertificationTomos($id){
+        $retirement_fund = RetirementFund::find($id);
+        $affiliate = $retirement_fund->affiliate;
+        $tomos = ContributionType::where('name','=','Período Certificación Con Aporte')->first();
+        $tomos_sin_aporte = ContributionType::where('name','=','Período Certificación Sin Aporte')->first();
+        $contributions = Contribution::where('affiliate_id', $affiliate->id)
+                        ->orderBy('month_year')
+                        ->get();
+        $reimbursements = Reimbursement::where('affiliate_id', $affiliate->id)
+                        ->orderBy('month_year')
+                        ->get();
+        $institution = 'MUTUAL DE SERVICIOS AL POLICÍA "MUSERPOL"';
+        $direction = "DIRECCIÓN DE BENEFICIOS ECONÓMICOS";
+        $unit = "UNIDAD DE OTORGACIÓN DE FONDO DE RETIRO POLICIAL, CUOTA MORTUORIA Y AUXILIO MORTUORIO";
+        $title = "CERTIFICACION";
+        $subtitle = "Cuenta Individual";
+        $number = $retirement_fund->code;
+        $date = Util::getStringDate($retirement_fund->reception_date);
+        $degree = Degree::find($affiliate->degree_id);
+        $exp = City::find($affiliate->city_identity_card_id);
+        $exp = ($exp==Null)? "-": $exp->first_shortened;
+        $dateac = Carbon::now()->format('d/m/Y');
+        $place = City::find($retirement_fund->city_start_id);              
+        $username = Auth::user()->username;
+        $pdftitle = "Cuentas Individuales";
+        $namepdf = Util::getPDFName($pdftitle, $affiliate);
+        return \PDF::loadView('contribution.print.certification_tomos', compact('tomos','tomos_sin_aporte','subtitle','place','retirement_fund','reimbursements','dateac','exp','degree','contributions','affiliate','title', 'username','institution', 'direction', 'unit', 'date','header', 'number'))->setPaper('letter')->setOption('encoding', 'utf-8')->setOption('footer-right', 'Pagina [page] de [toPage]')->setOption('footer-left', 'PLATAFORMA VIRTUAL DE LA MUSERPOL - 2018')->stream("$namepdf");
+    }
     public function printSecurity(){
-        
+
     }
     public function printLegalDictum($id){        
         $retirement_fund = RetirementFund::find($id);

@@ -2,7 +2,7 @@
 @section('content')
 
 <div>
-        El suscrito Encargado de  Cuentas Individuales en base a una revisión de la Base de Datos del Sistema Informático de MUSERPOL de aportes realizados por funcionarios en comisión de Item "0", del señor:
+        El suscrito Encargado de  Cuentas Individuales en base a una revisión manual de planillas de pago de haberes del Batallón de Seguridad Física Privada La Paz, del señor:
 </div><br>
 @include('print_global.police_info', ['affiliate' => $affiliate, 'degree' => $degree, 'exp' => $exp ])
 <strong>CERTIFICA:</strong>
@@ -38,7 +38,7 @@
 
     <tbody> 
         @foreach($contributions as $contribution)     
-            @if($contribution->contribution_type_id == $itemcero->id)
+            @if($contribution->contribution_type_id == $bs->id)
                 <tr class="text-sm">
                     <td class="text-center uppercase font-bold px-5 py-3">{{ date('m', strtotime($contribution->month_year)) }}</td>
                     <td class="text-center uppercase font-bold px-5 py-3">{{ date('Y', strtotime($contribution->month_year)) }}</td>
@@ -66,7 +66,7 @@
                     @endif        
                 @endforeach
             @endif
-            @if($contribution->contribution_type_id == $itemcero_sin_aporte->id)
+            @if($contribution->contribution_type_id == $bs_sin_aporte->id)
                 <tr class="text-sm">
                     <td class="text-center uppercase font-bold px-5 py-3">{{ date('m', strtotime($contribution->month_year)) }}</td>
                     <td class="text-center uppercase font-bold px-5 py-3">{{ date('Y', strtotime($contribution->month_year)) }}</td>
