@@ -81,6 +81,9 @@
     background: #3aac5d;
     color: white
 }
+li a { 
+    display: block;
+}
 </style>
 @endsection
 @section('content')

@@ -32,7 +32,7 @@
             </td>--}}               
         </tr>
     </thead><br>
-
+ 
     <tbody> 
         @foreach($contributions as $contribution)     
             @if($contribution->contribution_type_id == $disponibilidad->id)

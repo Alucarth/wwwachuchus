@@ -10,39 +10,37 @@
     <thead class="bg-grey-darker">
         <tr class="font-medium text-white text-sm">
             <td class="px-15 py text-center ">
-                MES
+                Nº
             </td>
             <td class="px-15 py text-center ">
-                AÑO
+                MES
             </td>        
             <td class="px-15 py text-center">
-                COTIZABLE
+                AÑO
             </td>
             <td class="px-15 py text-center">
-                SUELDO
+                TOTAL GANADO
             </td>
             <td class="px-15 py text-center">
-                ANTIGUEDAD
+                BONO SEGURIDAD CIUDADANA
             </td>
-            
             <td class="px-15 py text-center">
-                APORTE
+                TOTAL APORTE
             </td>
                        
         </tr>
     </thead><br>
-
+    <?php $num = 0; ?>
     <tbody> 
         @foreach($contributions as $contribution)     
             @if($contribution->contribution_type_id == $tomos->id)
                 <tr class="text-sm">
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ $num=$num+1}}</td>
                     <td class="text-center uppercase font-bold px-5 py-3">{{ date('m', strtotime($contribution->month_year)) }}</td>
                     <td class="text-center uppercase font-bold px-5 py-3">{{ date('Y', strtotime($contribution->month_year)) }}</td>
-                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->quotable }}</td>
-                 
-                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->base_wage }}</td>                        
-                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->seniority_bonus }}</td>
-                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->total }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->gain }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->public_security_bonus }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->total }}</td>  
                     {{-- con la bd devretfun
                         <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->interest }}</td>--}}
                     
@@ -50,13 +48,12 @@
                 @foreach($reimbursements as $reimbursement)    
                     @if($contribution->month_year == $reimbursement->month_year)
                         <tr class="text-sm">
+                            <td class="text-center uppercase font-bold px-5 py-3">{{ $num=$num+1}}</td>
                             <td class="text-center uppercase font-bold px-5 py-3">{{ date('m', strtotime($contribution->month_year)) }}</td>
-                            <td class="text-center uppercase font-bold px-5 py-3">{{ date('Y', strtotime($reimbursement->month_year)) }}</td>
-                            <td class="text-center uppercase font-bold px-5 py-3">{{ $reimbursement->quotable }}</td>
-                           
-                            <td class="text-center uppercase font-bold px-5 py-3">{{ $reimbursement->base_wage }}</td>
-                            <td class="text-center uppercase font-bold px-5 py-3">{{ $reimbursement->seniority_bonus }}</td>
-                            <td class="text-center uppercase font-bold px-5 py-3">{{ $reimbursement->total }}</td>
+                            <td class="text-center uppercase font-bold px-5 py-3">{{ date('Y', strtotime($contribution->month_year)) }}</td>
+                            <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->gain }}</td>
+                            <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->public_security_bonus }}</td>
+                            <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->total }}</td>  
                             
                         </tr>
                     @endif        
@@ -64,13 +61,13 @@
             @endif
             @if($contribution->contribution_type_id == $tomos_sin_aporte->id)
                 <tr class="text-sm">
-                        <td class="text-center uppercase font-bold px-5 py-3">{{ date('m', strtotime($contribution->month_year)) }}</td>
-                        <td class="text-center uppercase font-bold px-5 py-3">{{ date('Y', strtotime($contribution->month_year)) }}</td>
-                        <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->quotable }}</td>
-                     
-                        <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->base_wage }}</td>                        
-                        <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->seniority_bonus }}</td>
-                        <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->total }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ $num=$num+1}}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ date('m', strtotime($contribution->month_year)) }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ date('Y', strtotime($contribution->month_year)) }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3" colspan="3"> {{$tomos_sin_aporte->name}} </td>
+                    {{-- <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->gain }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->public_security_bonus }}</td>
+                    <td class="text-center uppercase font-bold px-5 py-3">{{ $contribution->total }}</td>   --}}
                 </tr> 
                 
             @endif
